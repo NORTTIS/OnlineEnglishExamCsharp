@@ -1,0 +1,129 @@
+﻿@using PRN222_English_Exam.ViewModels
+@model ExamDetail
+
+@{
+    ViewData["Title"] = "Edit Exam";
+    ViewData["PageTitle"] = "Edit Exam";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-controller="Exams" asp-action="EditExam" method="post" onsubmit="return validateForm()">
+    <input type="hidden" asp-for="ExamId" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label">Exam Title</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Duration" class="form-label">Duration(min)</label>
+        <input asp-for="Duration" type="number" class="form-control" min="1"/>
+        <span asp-validation-for="Duration" class="text-danger"></span>
+    </div>
+
+    <hr />
+    <h4>Questions</h4>
+    <div id="questions-container">
+        @for (int i = 0; i < Model.Questions.Count; i++)
+        {
+                <div class="card mb-3 p-3 border">
+                    <h5 class="mb-3">Question @(i + 1)</h5>
+                    <div class="mb-2">
+                        <label>Question Text</label>
+                        <input name="Questions[@i].QuestionText" class="form-control" value="@Model.Questions[i].QuestionText" required />
+                    </div>
+                    <div class="mb-2">
+                        <label>Question Type</label>
+                        <select name="Questions[@i].QuestionType" class="form-select" onchange="onTypeChange(this, @i)">
+                            <option value="text" selected="@("text" == Model.Questions[i].QuestionType)">Text</option>
+                            <option value="radio" selected="@("radio" == Model.Questions[i].QuestionType)">Single Choice</option>
+                            <option value="checkbox" selected="@("checkbox" == Model.Questions[i].QuestionType)">Multiple Choice</option>
+                        </select>
+                    </div>
+                    <div class="options-container" id="options-@i">
+                    @if (Model.Questions[i].QuestionType!="text")
+                    {
+                        @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
+                        {
+                            <div class="input-group mb-1">
+                                <input name="Questions[@i].Options[@j]" class="form-control" value="@Model.Questions[i].Options[j]" required />
+                                    <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+                                </div>
+                    }
+                    }
+                    </div>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addOption(@i)">+ Add Option</button>
+                        <button type="button" class="btn btn-sm btn-danger float-end" onclick="this.closest('.card').remove()">Remove Question</button>
+                    </div>
+                </div>
+        }
+    </div>
+     <button type="button" class="btn btn-outline-primary" onclick="addQuestion()">+ Add Question</button>
+
+    <hr />
+    <button type="submit" class="btn btn-success">Update Exam</button>
+</form>
+
+@section Scripts {
+        <script>
+            let questionIndex = @Model.Questions.Count;
+
+            function addQuestion() {
+                const container = document.getElementById("questions-container");
+                const html = `
+                    <div class="card mb-3 p-3 border">
+                        <h5 class="mb-3">Question #${questionIndex + 1}</h5>
+                        <div class="mb-2">
+                            <label>Question Text</label>
+                            <input name="Questions[${questionIndex}].QuestionText" class="form-control" required />
+                        </div>
+                        <div class="mb-2">
+                            <label>Question Type</label>
+                            <select name="Questions[${questionIndex}].QuestionType" class="form-select" onchange="onTypeChange(this, ${questionIndex})">
+                                <option value="text">Text</option>
+                                <option value="radio">Single Choice</option>
+                                <option value="checkbox">Multiple Choice</option>
+                            </select>
+                        </div>
+                        <div class="options-container" id="options-${questionIndex}"></div>
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addOption(${questionIndex})">+ Add Option</button>
+                            <button type="button" class="btn btn-sm btn-danger float-end" onclick="this.closest('.card').remove()">Remove Question</button>
+                        </div>
+                    </div>`;
+                container.insertAdjacentHTML("beforeend", html);
+                questionIndex++;
+            }
+
+            function addOption(qIndex) {
+                const questionTypeSelect = document.querySelector(`select[name="Questions[${qIndex}].QuestionType"]`);
+                     if (questionTypeSelect && questionTypeSelect.value === "text") {
+                         alert("Text questions do not support options.");
+                           return;
+                     }
+                const container = document.getElementById(`options-${qIndex}`);
+                const optionCount = container.querySelectorAll("input").length;
+                const html = `
+                    <div class="input-group mb-1">
+                        <input name="Questions[${qIndex}].Options[${optionCount}]" class="form-control" placeholder="Option text" />
+                        <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+                    </div>`;
+                container.insertAdjacentHTML("beforeend", html);
+            }
+
+            function onTypeChange(select, index) {
+                const container = document.getElementById(`options-${index}`);
+                   container.innerHTML = ""; 
+            }
+
+            function validateForm() {
+                if (document.querySelectorAll("#questions-container .card").length === 0) {
+                    alert("Please add at least one question.");
+                    return false;
+                }
+                return true;
+            }
+        </script>
+}
