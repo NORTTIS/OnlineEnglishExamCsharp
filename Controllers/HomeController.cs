@@ -16,11 +16,24 @@ namespace PRN222_English_Exam.Controllers
 
         public IActionResult Index()
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("ADMIN"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+                else if (User.IsInRole("USER"))
+                {
+                    return View();
+                }
+            }
             return View();
         }
-        [Authorize(Roles = "ADMIN")]
-        public IActionResult Privacy()
+        [Authorize(Roles = "USER")]
+        [HttpPost]
+        public IActionResult Search(string searchValue)
         {
+            TempData["SearchValue"] = searchValue;
             return View();
         }
 

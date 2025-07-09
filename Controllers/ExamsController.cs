@@ -8,8 +8,13 @@ namespace PRN222_English_Exam.Controllers
     [Route("Admin/[controller]/[action]")]
     public class ExamsController(OnlineExamDbContext context) : Controller
     {
-        public IActionResult ListExam(ExamCreateViewModel model)
+        public IActionResult ListExam(List<Exam> listExam)
         {
+            if (listExam != null && listExam.Count > 0)
+            {
+                return View(listExam);
+            }
+
             List<Exam> Ex = context.Exam.OrderByDescending(e => e.CreatedAt).ToList();
 
             return View(Ex);
@@ -178,6 +183,53 @@ namespace PRN222_English_Exam.Controllers
             context.SaveChanges();
             TempData["Message"] = "Exam deleted successfully!";
             return RedirectToAction("ListExam");
+        }
+
+        [HttpPost]
+        public IActionResult Search(string SearchValue,string SortBy, string SortOrder)
+        {
+            var exams = context.Exam.ToList(); ;
+            if (!string.IsNullOrEmpty(SearchValue))
+            {
+                exams = context.Exam
+                .Where(e => e.Title.Contains(SearchValue) || e.ExamId.ToString().Contains(SearchValue))
+                .ToList();
+            }
+           
+            if(!string.IsNullOrEmpty(SortOrder))
+            {
+                if(SortOrder == "ASC")
+                {
+                    if(SortBy == "Title")
+                        exams = exams.OrderBy(e => e.Title).ToList();
+                    else if(SortBy == "Duration")
+                        exams = exams.OrderBy(e => e.Duration).ToList();
+                    else if(SortBy == "CreatedAt")
+                        exams = exams.OrderBy(e => e.CreatedAt).ToList();
+                    else if(SortBy == "UpdatedAt")
+                        exams = exams.OrderBy(e => e.UpdatedAt).ToList();
+                    else
+                        exams = exams.OrderBy(e => e.ExamId).ToList(); // Default sort by ExamId
+                }
+                else if(SortOrder == "DESC")
+                {
+
+                    if (SortBy == "Title")
+                        exams = exams.OrderByDescending(e => e.Title).ToList();
+                    else if (SortBy == "Duration")
+                        exams = exams.OrderByDescending(e => e.Duration).ToList();
+                    else if (SortBy == "CreatedAt")
+                        exams = exams.OrderByDescending(e => e.CreatedAt).ToList();
+                    else if (SortBy == "UpdatedAt")
+                        exams = exams.OrderByDescending(e => e.UpdatedAt).ToList();
+                    else
+                        exams = exams.OrderByDescending(e => e.ExamId).ToList(); // Default sort by ExamId
+                }
+            }
+            TempData["SortBy"] = SortBy;
+            TempData["SortOrder"] = SortOrder;
+            TempData["SearchValue"] = SearchValue;
+            return View("ListExam", exams);
         }
     }
 }
