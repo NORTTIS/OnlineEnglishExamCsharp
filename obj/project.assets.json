@@ -4896,24 +4896,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\2132k\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\Norttis_workspace\\OnlineEnglishExamCsharp\\PRN222_English_Exam.csproj",
+      "projectUniqueName": "C:\\Users\\2132k\\source\\repos\\PRN222_English_Exam\\PRN222_English_Exam\\PRN222_English_Exam.csproj",
       "projectName": "PRN222_English_Exam",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\Norttis_workspace\\OnlineEnglishExamCsharp\\PRN222_English_Exam.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\Norttis_workspace\\OnlineEnglishExamCsharp\\obj\\",
+      "projectPath": "C:\\Users\\2132k\\source\\repos\\PRN222_English_Exam\\PRN222_English_Exam\\PRN222_English_Exam.csproj",
+      "packagesPath": "C:\\Users\\2132k\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\2132k\\source\\repos\\PRN222_English_Exam\\PRN222_English_Exam\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\2132k\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4938,8 +4933,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.300"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -4977,6 +4971,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.14, 8.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.14, 8.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.14, 8.0.14]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.14, 8.0.14]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -4985,7 +4997,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.407/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

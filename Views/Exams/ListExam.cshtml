@@ -1,10 +1,10 @@
-﻿    @using PRN222_English_Exam.ViewModels  
+﻿@using PRN222_English_Exam.ViewModels  
 @model List<Exam>  
 @{  
     ViewData["Title"] = "Exam List";  
     ViewData["PageTitle"] = "Exam list";  
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";  
-    var orderBy = TempData["OrderBy"]?.ToString() ?? "ExamId";  
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var SortBy = TempData["SortBy"]?.ToString() ?? "ExamId";
     var SortOrder = TempData["SortOrder"]?.ToString() ?? "DESC";
 }  
   
@@ -18,10 +18,10 @@
         <label for="searchInput">Search Exams:</label>  
         <div class="d-flex gap-2 mb-4">  
             <select name="SortBy">  
-                <option value="ExamId" selected="@(orderBy.Equals("ExamId") ? "selected" : null)">Id</option>  
-                <option value="Title" selected="@(orderBy.Equals("Title") ? "selected" : null)">Title</option>  
-                <option value="CreatedAt" selected="@(orderBy.Equals("CreatedAt") ? "selected" : null)">Created At</option>  
-                <option value="UpdatedAt" selected="@(orderBy.Equals("UpdatedAt") ? "selected" : null)">Updated At</option>  
+                <option value="ExamId" selected="@(SortBy.Equals("ExamId") ? "selected" : null)">Id</option>  
+                <option value="Title" selected="@(SortBy.Equals("Title") ? "selected" : null)">Title</option>  
+                <option value="CreatedAt" selected="@(SortBy.Equals("CreatedAt") ? "selected" : null)">Created At</option>  
+                <option value="UpdatedAt" selected="@(SortBy.Equals("UpdatedAt") ? "selected" : null)">Updated At</option>  
             </select>  
             <select name="SortOrder">  
                 <option selected="@(SortOrder.Equals("ASC") ? "selected" : null)" value="ASC">Ascending</option>  

@@ -1,0 +1,54 @@
+﻿@using PRN222_English_Exam.ViewModels  
+@model ExamDetail
+@{
+}
+<div class="card mb-4">
+    <div class="card-body">
+        <h2>@Model.Title</h2>
+        <p><strong>Duration:</strong> @Model.Duration minutes</p>
+        <p><strong>Created At:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+    </div>
+</div>
+
+<hr />
+
+<h4>Questions</h4>
+<form asp-controller="Home" asp-action="SubmitExam" asp-route-Id=@Model.ExamId>
+    @for (int i = 0; i < Model.Questions.Count; i++)
+    {
+        var q = Model.Questions[i];
+        <div class="card mb-3 p-3">
+            <h5>Question @(i + 1): @q.QuestionText</h5>
+            <input type="hidden" name="Questions[@i].QuestionId" value="@q.QuestionId" />
+            <input type="hidden" name="Questions[@i].QuestionText" value="@q.QuestionText" />
+            <input type="hidden" name="Questions[@i].QuestionType" value="@q.QuestionType" />
+
+            @if (q.QuestionType == "text")
+            {
+                    <input type="text" name="Questions[@i].AnswerText" class="form-control" placeholder="Your answer here..." />
+            }
+            else if (q.QuestionType == "radio")
+            {
+                for (int j = 0; j < q.Options.Count; j++)
+                {
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Questions[@i].AnswerText" value="@q.Options[j]" />
+                                <label class="form-check-label">@q.Options[j]</label>
+                            </div>
+                }
+            }
+            else if (q.QuestionType == "checkbox")
+            {
+                for (int j = 0; j < q.Options.Count; j++)
+                {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Questions[@i].SelectedOptions" value="@q.Options[j]" />
+                                <label class="form-check-label">@q.Options[j]</label>
+                            </div>
+                }
+            }
+        </div>
+    }
+    <br/>
+    <button type="submit" class="btn btn-primary">Submit Exam</button>
+</form>

@@ -36,6 +36,23 @@
             @RenderBody()
         </main>
     </div>
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+        @if (TempData["Message"] != null)
+        {
+                <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+                    <i class="fas fa-check-circle"></i> @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+                <div class="alert alert-danger alert-dismissible fade show shadow" role="alert">
+                    <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+        }
+</div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -46,5 +63,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

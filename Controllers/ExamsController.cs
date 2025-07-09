@@ -83,7 +83,8 @@ namespace PRN222_English_Exam.Controllers
 
             if (exam == null)
             {
-                return NotFound();
+                TempData["Error"] = "Exam not found!";
+                return View("ListExam");
             }
             var examDetail = new ExamDetail
             {
@@ -186,7 +187,7 @@ namespace PRN222_English_Exam.Controllers
         }
 
         [HttpPost]
-        public IActionResult Search(string SearchValue,string SortBy, string SortOrder)
+        public IActionResult Search(string SearchValue, string SortBy, string SortOrder)
         {
             var exams = context.Exam.ToList(); ;
             if (!string.IsNullOrEmpty(SearchValue))
@@ -195,23 +196,23 @@ namespace PRN222_English_Exam.Controllers
                 .Where(e => e.Title.Contains(SearchValue) || e.ExamId.ToString().Contains(SearchValue))
                 .ToList();
             }
-           
-            if(!string.IsNullOrEmpty(SortOrder))
+
+            if (!string.IsNullOrEmpty(SortOrder))
             {
-                if(SortOrder == "ASC")
+                if (SortOrder == "ASC")
                 {
-                    if(SortBy == "Title")
+                    if (SortBy == "Title")
                         exams = exams.OrderBy(e => e.Title).ToList();
-                    else if(SortBy == "Duration")
+                    else if (SortBy == "Duration")
                         exams = exams.OrderBy(e => e.Duration).ToList();
-                    else if(SortBy == "CreatedAt")
+                    else if (SortBy == "CreatedAt")
                         exams = exams.OrderBy(e => e.CreatedAt).ToList();
-                    else if(SortBy == "UpdatedAt")
+                    else if (SortBy == "UpdatedAt")
                         exams = exams.OrderBy(e => e.UpdatedAt).ToList();
                     else
                         exams = exams.OrderBy(e => e.ExamId).ToList(); // Default sort by ExamId
                 }
-                else if(SortOrder == "DESC")
+                else if (SortOrder == "DESC")
                 {
 
                     if (SortBy == "Title")

@@ -18,9 +18,13 @@ namespace PRN222_English_Exam.ViewModels
 
     public class QuestionDetail
     {
+        public int QuestionId { get; set; }
         [Required(ErrorMessage = "Question text is required.")]
         public string QuestionText { get; set; }
         public string QuestionType { get; set; }
         public List<string> Options { get; set; } = new List<string>();
+
+        public string AnswerText { get; set; } // for text/radio
+        public List<string> SelectedOptions { get; set; } = new List<string>(); // for checkbox
     }
 }
