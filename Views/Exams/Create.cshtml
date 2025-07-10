@@ -2,100 +2,122 @@
 @model ExamCreateViewModel
 
 @{
-    ViewData["Title"] = "Create Exam";
-    ViewData["PageTitle"] = "New Exam";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewData["Title"] = "Create Exam";
+	ViewData["PageTitle"] = "New Exam";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <form asp-action="CreateExam" method="post" onsubmit="return validateForm()">
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label">Exam Title</label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Duration" class="form-label">Duration(min)</label>
-        <input asp-for="Duration" type="number" class="form-control" min="1"/>
-        <span asp-validation-for="Duration" class="text-danger"></span>
-    </div>
+	<div class="mb-3">
+		<label asp-for="Title" class="form-label">Exam Title</label>
+		<input asp-for="Title" class="form-control" />
+		<span asp-validation-for="Title" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Duration" class="form-label">Duration(min)</label>
+		<input asp-for="Duration" type="number" class="form-control" min="1" />
+		<span asp-validation-for="Duration" class="text-danger"></span>
+	</div>
 
-    <hr />
-    <h4>Questions</h4>
-    <div id="questions-container"></div>
-    <button type="button" class="btn btn-outline-primary" onclick="addQuestion()">+ Add Question</button>
+	<hr />
+	<h4>Questions</h4>
+	<div id="questions-container"></div>
+	<button type="button" class="btn btn-outline-primary" onclick="addQuestion()">+ Add Question</button>
 
-    <hr />
-    <button type="submit" class="btn btn-success">Create Exam</button>
+	<hr />
+	<button type="submit" class="btn btn-success">Create Exam</button>
 </form>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
-    }
-            <script>
-                let questionIndex = 0;
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+	}
+	<script>
+		let questionIndex = 0;
 
-                function addQuestion() {
-                    const container = document.getElementById("questions-container");
-                    const html = `
-                        <div class="card mb-3 p-3 border">
-                            <h5 class="mb-3">Question #${questionIndex + 1}</h5>
-                            <div class="mb-2">
-                                <label>Question Text</label>
-                                <input name="Questions[${questionIndex}].QuestionText" class="form-control" required />
-                                    <span asp-validation-for="Questions[${questionIndex}].QuestionText" class="text-danger"></span>
-                            </div>
-                            <div class="mb-2">
-                                <label>Question Type</label>
-                                <select name="Questions[${questionIndex}].QuestionType" class="form-select" onchange="onTypeChange(this, ${questionIndex})">
-                                    <option value="text">Text</option>
-                                    <option value="radio">Single Choice</option>
-                                    <option value="checkbox">Multiple Choice</option>
-                                </select>
-                            </div>
-                            <div class="options-container" id="options-${questionIndex}"></div>
-                            <div class="mt-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addOption(${questionIndex})">+ Add Option</button>
-                                <button type="button" class="btn btn-sm btn-danger float-end" onclick="this.closest('.card').remove()">Remove Question</button>
-                            </div>
-                        </div>`;
-                    container.insertAdjacentHTML("beforeend", html);
-                    questionIndex++;
-                }
+		function addQuestion() {
+			const container = document.getElementById("questions-container");
+			const html = `
+				<div class="card mb-3 p-3 border">
+					<h5 class="mb-3">Question #${questionIndex + 1}</h5>
+					<div class="mb-2">
+						<label>Question Text</label>
+						<input name="Questions[${questionIndex}].QuestionText" class="form-control" required />
+							<span asp-validation-for="Questions[${questionIndex}].QuestionText" class="text-danger"></span>
+					</div>
+					<div class="mb-2">
+						<label>Question Type</label>
+						<select name="Questions[${questionIndex}].QuestionType" class="form-select" onchange="onTypeChange(this, ${questionIndex})">
+							<option value="text">Text</option>
+							<option value="radio">Single Choice</option>
+							<option value="checkbox">Multiple Choice</option>
+						</select>
+					</div>
+					<div class="options-container" id="options-${questionIndex}"></div>
+					<div class="mt-2">
+						<button type="button" class="btn btn-sm btn-outline-secondary" onclick="addOption(${questionIndex})">+ Add Option</button>
+						<button type="button" class="btn btn-sm btn-danger float-end" onclick="this.closest('.card').remove()">Remove Question</button>
+					</div>
+				</div>`;
+			container.insertAdjacentHTML("beforeend", html);
+			questionIndex++;
+		}
 
-                function onTypeChange(select, index) {
-                    const container = document.getElementById(`options-${index}`);
-                    if (select.value === "text") {
-                        container.innerHTML = ""; 
-                    } else {
-                        container.innerHTML = ""; 
-                        addOption(index); 
-                    }
-                }
+		function onTypeChange(select, index) {
+			const container = document.getElementById(`options-${index}`);
+				container.innerHTML = "";
+				addOption(index);
+		}
 
-                function addOption(qIndex) {
-                    const container = document.getElementById(`options-${qIndex}`);
-                    const optionCount = container.querySelectorAll("input").length;
-                    const html = `
-                        <div class="input-group mb-1">
-                            <input name="Questions[${qIndex}].Options[${optionCount}]" class="form-control" placeholder="Option text" required />
-                            <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
-                        </div>`;
-                    container.insertAdjacentHTML("beforeend", html);
-                }
-                function validateForm() {
-                        const form = document.querySelector("form");
-                        if (!$(form).valid()) {
-                            return false;
-                        }
-                    if (document.querySelectorAll("#questions-container .card").length === 0) {
-                        alert("Please add at least one question.");
-                        return false;
-                    }
-                    return true;
-                }
+		function addOption(qIndex) {
+			const questionTypeSelect = document.querySelector(`select[name="Questions[${qIndex}].QuestionType"]`);
+			const container = document.getElementById(`options-${qIndex}`);
 
-            </script>
-       
-    }
+			const optionCount = container.querySelectorAll(".input-group").length;
+
+			let html = `
+				<div class="input-group mb-1">
+					<input name="Questions[${qIndex}].TextAnswer" class="form-control" placeholder="Answer text" required />
+					<button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+				</div>`;
+
+			if (questionTypeSelect.value === "checkbox") {
+				html = `
+				<div class="input-group mb-1">
+					<div class="input-group-text">
+						<input type="checkbox" name="Questions[${qIndex}].MultipleChoiceAnswer" value="${optionCount}" />
+					</div>
+					<input name="Questions[${qIndex}].Options[${optionCount}]" class="form-control" placeholder="Option text" required />
+					<button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+				</div>`;
+			}
+
+			if (questionTypeSelect.value === "radio") {
+				html = `
+				<div class="input-group mb-1">
+					<div class="input-group-text">
+						<input type="radio" name="Questions[${qIndex}].SingleChoiceAnswer" value="${optionCount}" />
+					</div>
+					<input name="Questions[${qIndex}].Options[${optionCount}]" class="form-control" placeholder="Option text" required />
+					<button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+				</div>`;
+			}
+
+			container.insertAdjacentHTML("beforeend", html);
+		}
+		function validateForm() {
+				const form = document.querySelector("form");
+				if (!$(form).valid()) {
+					return false;
+				}
+			if (document.querySelectorAll("#questions-container .card").length === 0) {
+				alert("Please add at least one question.");
+				return false;
+			}
+			return true;
+		}
+
+	</script>
+
+}
 

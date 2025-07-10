@@ -173,6 +173,7 @@ C:\Users\2132k\source\repos\PRN222_English_Exam\PRN222_English_Exam\obj\Debug\ne
 C:\Users\2132k\source\repos\PRN222_English_Exam\PRN222_English_Exam\obj\Debug\net8.0\ref\PRN222_English_Exam.dll
 C:\Users\2132k\source\repos\PRN222_English_Exam\PRN222_English_Exam\obj\Debug\net8.0\scopedcss\Views\Shared\_AccountLayout.cshtml.rz.scp.css
 C:\Users\2132k\source\repos\PRN222_English_Exam\PRN222_English_Exam\obj\Debug\net8.0\scopedcss\Views\Shared\_AdminLayout.cshtml.rz.scp.css
+C:\Users\2132k\source\repos\PRN222_English_Exam\PRN222_English_Exam\obj\Debug\net8.0\PRN222_English_Exam.sourcelink.json
 C:\Users\Admin\Desktop\Norttis_workspace\OnlineEnglishExamCsharp\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\Admin\Desktop\Norttis_workspace\OnlineEnglishExamCsharp\bin\Debug\net8.0\appsettings.json
 C:\Users\Admin\Desktop\Norttis_workspace\OnlineEnglishExamCsharp\bin\Debug\net8.0\PRN222_English_Exam.staticwebassets.runtime.json
@@ -352,4 +353,3 @@ C:\Users\Admin\Desktop\Norttis_workspace\OnlineEnglishExamCsharp\obj\Debug\net8.
 C:\Users\Admin\Desktop\Norttis_workspace\OnlineEnglishExamCsharp\obj\Debug\net8.0\PRN222_English_Exam.pdb
 C:\Users\Admin\Desktop\Norttis_workspace\OnlineEnglishExamCsharp\obj\Debug\net8.0\PRN222_English_Exam.genruntimeconfig.cache
 C:\Users\Admin\Desktop\Norttis_workspace\OnlineEnglishExamCsharp\obj\Debug\net8.0\ref\PRN222_English_Exam.dll
-C:\Users\2132k\source\repos\PRN222_English_Exam\PRN222_English_Exam\obj\Debug\net8.0\PRN222_English_Exam.sourcelink.json

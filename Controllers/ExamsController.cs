@@ -30,7 +30,16 @@ namespace PRN222_English_Exam.Controllers
         [HttpPost]
         public IActionResult CreateExam(ExamCreateViewModel examCreateViewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                return View("Create");
+                
+            }
+            else
             {
                 TempData["Message"] = "Exam created successfully!";
                 Exam exam = new Exam
@@ -47,27 +56,43 @@ namespace PRN222_English_Exam.Controllers
                         QuestionType = q.QuestionType,
                         Options = new List<Option>()
                     };
-                    foreach (var optionText in q.Options ?? new List<string>())
+
+                    if (q.QuestionType == "text")
                     {
                         question.Options.Add(new Option
                         {
-                            OptionText = optionText
+                            OptionText = q.TextAnswer,
+                            IsCorrect = true
                         });
                     }
+                    else if (q.QuestionType == "radio")
+                    {
+                        for (int i = 0; i < q.Options.Count; i++)
+                        {
+                            question.Options.Add(new Option
+                            {
+                                OptionText = q.Options[i].OptionText,
+                                IsCorrect = i == q.SingleChoiceAnswer
+                            });
+                        }
+                    }
+                    else if (q.QuestionType == "checkbox")
+                    {
+                        for (int i = 0; i < q.Options.Count; i++)
+                        {
+                            question.Options.Add(new Option
+                            {
+                                OptionText = q.Options[i].OptionText,
+                                IsCorrect = q.MultipleChoiceAnswer?.Contains(i) == true
+                            });
+                        }
+                    }
+
                     exam.Questions.Add(question);
                 }
                 context.Exam.Add(exam);
                 context.SaveChanges();
                 return RedirectToAction("ListExam");
-            }
-            else
-            {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    ModelState.AddModelError("", error.ErrorMessage);
-                }
-                return View("Create");
-
             }
 
         }
@@ -86,17 +111,22 @@ namespace PRN222_English_Exam.Controllers
                 TempData["Error"] = "Exam not found!";
                 return View("ListExam");
             }
-            var examDetail = new ExamDetail
+            var examDetail = new ExamCreateViewModel
             {
                 ExamId = exam.ExamId,
                 Title = exam.Title,
                 Duration = exam.Duration,
                 CreatedAt = exam.CreatedAt,
-                Questions = exam.Questions.Select(q => new QuestionDetail
+
+                Questions = exam.Questions.Select(q => new QuestionViewModel
                 {
                     QuestionText = q.QuestionText,
                     QuestionType = q.QuestionType,
-                    Options = q.Options.Select(o => o.OptionText).ToList()
+                    Options = q.Options.Select(o => new OptionViewModel
+                    {
+                        OptionText = o.OptionText,
+                        IsCorrect = o.IsCorrect
+                    }).ToList()
                 }).ToList()
             };
 
@@ -114,20 +144,26 @@ namespace PRN222_English_Exam.Controllers
 
             if (exam == null) return NotFound();
 
-            var vm = new ExamDetail
+            var examDetail = new ExamCreateViewModel
             {
                 ExamId = exam.ExamId,
                 Title = exam.Title,
                 Duration = exam.Duration,
-                Questions = exam.Questions.Select(q => new QuestionDetail
+                CreatedAt = exam.CreatedAt,
+
+                Questions = exam.Questions.Select(q => new QuestionViewModel
                 {
                     QuestionText = q.QuestionText,
                     QuestionType = q.QuestionType,
-                    Options = q.Options.Select(o => o.OptionText).ToList()
+                    Options = q.Options.Select(o => new OptionViewModel
+                    {
+                        OptionText = o.OptionText,
+                        IsCorrect = o.IsCorrect
+                    }).ToList()
                 }).ToList()
             };
 
-            return View(vm);
+            return View(examDetail);
         }
 
         [HttpPost]

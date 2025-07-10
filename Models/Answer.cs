@@ -8,6 +8,7 @@ namespace PRN222_English_Exam.Models
         public string UserId { get; set; }
         public int ExamId { get; set; }
         public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
+        public float Score { get; set; }
 
         public Exam Exam { get; set; }
         public Users User { get; set; }

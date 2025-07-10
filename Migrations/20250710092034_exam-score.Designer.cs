@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PRN222_English_Exam.Models;
 
@@ -11,9 +12,11 @@ using PRN222_English_Exam.Models;
 namespace PRN222_English_Exam.Migrations
 {
     [DbContext(typeof(OnlineExamDbContext))]
-    partial class OnlineExamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250710092034_exam-score")]
+    partial class examscore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

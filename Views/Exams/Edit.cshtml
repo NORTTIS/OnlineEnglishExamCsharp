@@ -1,5 +1,5 @@
 ﻿@using PRN222_English_Exam.ViewModels
-@model ExamDetail
+@model ExamCreateViewModel
 
 @{
     ViewData["Title"] = "Edit Exam";
@@ -47,10 +47,27 @@
                         @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
                         {
                             <div class="input-group mb-1">
-                                <input name="Questions[@i].Options[@j]" class="form-control" value="@Model.Questions[i].Options[j]" required />
+                                @if (Model.Questions[i].QuestionType == "checkbox")
+                                {
+                                    <div class="input-group-text">
+                                        <input type="checkbox" name="Questions[@i].MultipleChoiceAnswer" checked="@Model.Questions[i].Options[j].IsCorrect" value="@j" />
+                                    </div>
+                                }
+                                else if (Model.Questions[i].QuestionType == "radio")
+                                {
+                                    <div class="input-group-text">
+                                        <input type="radio" name="Questions[@i].MultipleChoiceAnswer" checked="@Model.Questions[i].Options[j].IsCorrect" value="@j" />
+                                    </div>
+								}
+                                <input name="Questions[@i].Options[@j]" class="form-control" value=@(Model.Questions[i].Options[j].OptionText) required />
                                     <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
-                                </div>
-                    }
+                             </div>
+                        }
+                    }else{
+                        <div class="input-group mb-1">
+                            <input name="Questions[@i].TextAnswer" class="form-control" placeholder="Answer text" required />
+                            <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+                        </div>
                     }
                     </div>
                     <div class="mt-2">
@@ -97,33 +114,58 @@
                 questionIndex++;
             }
 
-            function addOption(qIndex) {
-                const questionTypeSelect = document.querySelector(`select[name="Questions[${qIndex}].QuestionType"]`);
-                     if (questionTypeSelect && questionTypeSelect.value === "text") {
-                         alert("Text questions do not support options.");
-                           return;
-                     }
-                const container = document.getElementById(`options-${qIndex}`);
-                const optionCount = container.querySelectorAll("input").length;
-                const html = `
-                    <div class="input-group mb-1">
-                        <input name="Questions[${qIndex}].Options[${optionCount}]" class="form-control" placeholder="Option text" />
-                        <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
-                    </div>`;
-                container.insertAdjacentHTML("beforeend", html);
-            }
-
             function onTypeChange(select, index) {
-                const container = document.getElementById(`options-${index}`);
-                   container.innerHTML = ""; 
+            const container = document.getElementById(`options-${index}`);
+                container.innerHTML = "";
+                addOption(index);
+        }
+
+        function addOption(qIndex) {
+            const questionTypeSelect = document.querySelector(`select[name="Questions[${qIndex}].QuestionType"]`);
+            const container = document.getElementById(`options-${qIndex}`);
+
+            const optionCount = container.querySelectorAll(".input-group").length;
+
+            let html = `
+                <div class="input-group mb-1">
+                    <input name="Questions[${qIndex}].TextAnswer" class="form-control" placeholder="Answer text" required />
+                    <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+                </div>`;
+
+            if (questionTypeSelect.value === "checkbox") {
+                html = `
+                <div class="input-group mb-1">
+                    <div class="input-group-text">
+                        <input type="checkbox" name="Questions[${qIndex}].MultipleChoiceAnswer" value="${optionCount}" />
+                    </div>
+                    <input name="Questions[${qIndex}].Options[${optionCount}]" class="form-control" placeholder="Option text" required />
+                    <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+                </div>`;
             }
 
-            function validateForm() {
-                if (document.querySelectorAll("#questions-container .card").length === 0) {
-                    alert("Please add at least one question.");
+            if (questionTypeSelect.value === "radio") {
+                html = `
+                <div class="input-group mb-1">
+                    <div class="input-group-text">
+                        <input type="radio" name="Questions[${qIndex}].SingleChoiceAnswer" value="${optionCount}" />
+                    </div>
+                    <input name="Questions[${qIndex}].Options[${optionCount}]" class="form-control" placeholder="Option text" required />
+                    <button type="button" class="btn btn-outline-danger" onclick="this.closest('.input-group').remove()">×</button>
+                </div>`;
+            }
+
+            container.insertAdjacentHTML("beforeend", html);
+        }
+        function validateForm() {
+                const form = document.querySelector("form");
+                if (!$(form).valid()) {
                     return false;
                 }
-                return true;
+            if (document.querySelectorAll("#questions-container .card").length === 0) {
+                alert("Please add at least one question.");
+                return false;
             }
+            return true;
+        }
         </script>
 }

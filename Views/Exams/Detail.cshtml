@@ -1,5 +1,5 @@
-﻿@model PRN222_English_Exam.ViewModels.ExamDetail
-
+﻿@using PRN222_English_Exam.ViewModels
+@model ExamCreateViewModel
 @{
     ViewData["Title"] = "Exam Detail";
     ViewData["PageTitle"] = "Exam Detail";
@@ -26,26 +26,33 @@
 
         @if (q.QuestionType == "text")
         {
-                    <input type="text" class="form-control" placeholder="Your answer here..." disabled />
+                @foreach (var opt in q.Options)
+                {
+                <input type="text" class="form-control" value=@(opt.OptionText) disabled />
+                }
         }
         else if (q.QuestionType == "radio" && q.Options != null)
         {
             @foreach (var opt in q.Options)
             {
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" disabled />
-                                <label class="form-check-label">@opt</label>
-                            </div>
+                <div class="input-group mb-1">
+                    <div class="input-group-text" >
+                        <input type="checkbox" checked=@(opt.IsCorrect) disabled />
+                    </div>
+                    <input class="form-control" value=@(opt.OptionText) disabled  />
+                </div>
             }
         }
         else if (q.QuestionType == "checkbox" && q.Options != null)
         {
             @foreach (var opt in q.Options)
             {
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" disabled />
-                                <label class="form-check-label">@opt</label>
-                            </div>
+                <div class="input-group mb-1">
+                    <div class="input-group-text"  >
+                        <input type="radio" checked=@(opt.IsCorrect) disabled />
+                    </div>
+                    <input class="form-control" value=@(opt.OptionText) disabled />
+                </div>
             }
         }
         </div>
