@@ -36,9 +36,9 @@
                     <div class="mb-2">
                         <label>Question Type</label>
                         <select name="Questions[@i].QuestionType" class="form-select" onchange="onTypeChange(this, @i)">
-                            <option value="text" selected="@("text" == Model.Questions[i].QuestionType)">Text</option>
+                            @* <option value="text" selected="@("text" == Model.Questions[i].QuestionType)">Text</option> *@
                             <option value="radio" selected="@("radio" == Model.Questions[i].QuestionType)">Single Choice</option>
-                            <option value="checkbox" selected="@("checkbox" == Model.Questions[i].QuestionType)">Multiple Choice</option>
+                            @* <option value="checkbox" selected="@("checkbox" == Model.Questions[i].QuestionType)">Multiple Choice</option> *@
                         </select>
                     </div>
                     <div class="options-container" id="options-@i">
@@ -99,9 +99,8 @@
                         <div class="mb-2">
                             <label>Question Type</label>
                             <select name="Questions[${questionIndex}].QuestionType" class="form-select" onchange="onTypeChange(this, ${questionIndex})">
-                                <option value="text">Text</option>
                                 <option value="radio">Single Choice</option>
-                                <option value="checkbox">Multiple Choice</option>
+                                 
                             </select>
                         </div>
                         <div class="options-container" id="options-${questionIndex}"></div>
@@ -167,5 +166,7 @@
             }
             return true;
         }
+        // <option value="text">Text</option>
+        // <option value="checkbox">Multiple Choice</option>
         </script>
 }

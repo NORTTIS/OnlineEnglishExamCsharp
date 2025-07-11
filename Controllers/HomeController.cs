@@ -134,6 +134,8 @@ namespace PRN222_English_Exam.Controllers
                 SubmittedAt = DateTime.UtcNow,
                 AnswerDetails = new List<AnswerDetail>()
             };
+            float answerScore = 0;
+            int totalQuestions = exam.Questions.Count;
 
             foreach (var qDetail in model.Questions)
             {
@@ -151,7 +153,34 @@ namespace PRN222_English_Exam.Controllers
                         });
                     }
                 }
-                else
+                if (question.QuestionType == "radio")
+                {
+                    Option optionAnswer = question.Options.FirstOrDefault(o => o.OptionId.ToString() == qDetail.AnswerText);
+
+
+                    if (optionAnswer != null)
+                    {
+                        answer.AnswerDetails.Add(new AnswerDetail
+                        {
+                            QuestionId = question.QuestionId,
+                            AnswerText = optionAnswer.OptionId.ToString()
+                        });
+
+                        if (optionAnswer.IsCorrect)
+                        {
+                            answerScore += 1;
+                        }
+                    }
+                    else
+                    {
+                        answer.AnswerDetails.Add(new AnswerDetail
+                        {
+                            QuestionId = question.QuestionId,
+                            AnswerText = ""
+                        });
+                    }
+                }
+                else if (question.QuestionType == "text")
                 {
                     answer.AnswerDetails.Add(new AnswerDetail
                     {
@@ -159,13 +188,15 @@ namespace PRN222_English_Exam.Controllers
                         AnswerText = qDetail.AnswerText
                     });
                 }
+
             }
+            answer.Score = (answerScore / totalQuestions) * 10; 
 
             context.Answer.Add(answer);
-            context.SaveChanges();
+                context.SaveChanges();
 
-            TempData["Message"] = "Exam submitted successfully!";
-            return RedirectToAction("Index");
+                TempData["Message"] = "Exam submitted successfully!";
+                return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

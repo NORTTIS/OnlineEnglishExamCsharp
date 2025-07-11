@@ -23,6 +23,7 @@ namespace PRN222_English_Exam.ViewModels
         public int? SingleChoiceAnswer { get; set; } // for radio
         public List<int> MultipleChoiceAnswer { get; set; } = new List<int>(); // for checkbox
         public string? TextAnswer { get; set; } // for text input
+
         public List<OptionViewModel> Options { get; set; } = new();
     }
 

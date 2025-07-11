@@ -48,9 +48,8 @@
 					<div class="mb-2">
 						<label>Question Type</label>
 						<select name="Questions[${questionIndex}].QuestionType" class="form-select" onchange="onTypeChange(this, ${questionIndex})">
-							<option value="text">Text</option>
 							<option value="radio">Single Choice</option>
-							<option value="checkbox">Multiple Choice</option>
+							
 						</select>
 					</div>
 					<div class="options-container" id="options-${questionIndex}"></div>
@@ -116,7 +115,8 @@
 			}
 			return true;
 		}
-
+		// <option value="text">Text</option>
+		// <option value="checkbox">Multiple Choice</option>
 	</script>
 
 }

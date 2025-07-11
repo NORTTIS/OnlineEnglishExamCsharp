@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using PRN222_English_Exam.Models;
 using PRN222_English_Exam.ViewModels;
@@ -34,14 +35,13 @@ namespace PRN222_English_Exam.Controllers
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
-                    Console.WriteLine(error.ErrorMessage);
+                    ModelState.AddModelError("", error.ErrorMessage);
                 }
                 return View("Create");
                 
             }
             else
             {
-                TempData["Message"] = "Exam created successfully!";
                 Exam exam = new Exam
                 {
                     Title = examCreateViewModel.Title,
@@ -67,6 +67,11 @@ namespace PRN222_English_Exam.Controllers
                     }
                     else if (q.QuestionType == "radio")
                     {
+                        if (q.Options.Count == 0)
+                        {
+                            TempData["Error"] = "At least one option is required for single choice questions.";
+                            return View("Create");
+                        }
                         for (int i = 0; i < q.Options.Count; i++)
                         {
                             question.Options.Add(new Option
@@ -92,6 +97,7 @@ namespace PRN222_English_Exam.Controllers
                 }
                 context.Exam.Add(exam);
                 context.SaveChanges();
+                TempData["Message"] = "Exam created successfully!";
                 return RedirectToAction("ListExam");
             }
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PRN222_English_Exam")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b30bae6e53a15992e488e192b2c3ed747618017d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88f7ff0283dae987eece228dfe5f0c1f11c6396f")]
 [assembly: System.Reflection.AssemblyProductAttribute("PRN222_English_Exam")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PRN222_English_Exam")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
